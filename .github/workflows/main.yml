@@ -26,13 +26,10 @@ jobs:
     - name: 5. Instalar Motor de Pruebas via NuGet
       run: nuget install Microsoft.TestPlatform -Version 17.8.0 -OutputDirectory Packages_Test
 
-    - name: 6. Compilar Proyecto Principal
-      run: msbuild SistemaBancario\SistemaBancario.csproj /p:Configuration=Debug /p:Platform="AnyCPU"
+    - name: 6. Compilar Solucion Completa
+      run: msbuild SistemaBancario.sln /p:Configuration=Debug /p:Platform="Any CPU"
 
-    - name: 7. Compilar Proyecto de Pruebas
-      run: msbuild SistemaBancario.Test\SistemaBancario.Test.csproj /p:Configuration=Debug /p:Platform="AnyCPU"
-
-    - name: 8. Ejecutar Pruebas Unitarias Automatizadas
+    - name: 7. Ejecutar Pruebas Unitarias Automatizadas
       run: |
         $vstestPath = Get-ChildItem -Path "Packages_Test" -Filter "vstest.console.exe" -Recurse | Select-Object -First 1 -ExpandProperty FullName
         & $vstestPath SistemaBancario.Test\bin\Debug\SistemaBancario.Test.dll
