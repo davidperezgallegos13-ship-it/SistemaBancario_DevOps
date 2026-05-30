@@ -20,14 +20,16 @@ jobs:
     - name: 3. Configurar Gestor de Paquetes NuGet
       uses: NuGet/setup-nuget@v1.2.0
 
-    - name: 4. Restaurar Dependencias de la Solucion
-      run: nuget restore SistemaBancario.sln
+    - name: 4. Restaurar Componentes y Paquetes NuGet
+      run: |
+        nuget restore SistemaBancario.sln
+        msbuild SistemaBancario.sln /t:Restore
 
-    - name: 5. Instalar Plataforma de Pruebas Microsoft via NuGet
+    - name: 5. Instalar Plataforma de Pruebas Microsoft
       run: nuget install Microsoft.TestPlatform -Version 17.8.0 -OutputDirectory Packages_Test
 
-    - name: 6. Compilar Solucion de Formularios y Clases
-      run: msbuild SistemaBancario.sln /p:Configuration=Debug
+    - name: 6. Compilar Solucion Completa (UI y Clases)
+      run: msbuild SistemaBancario.sln /p:Configuration=Debug /p:Platform="Any CPU"
 
     - name: 7. Ejecutar Pruebas Unitarias Automatizadas
       run: |
