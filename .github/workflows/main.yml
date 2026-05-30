@@ -1,0 +1,33 @@
+name: Pipeline Sistema Bancario
+
+on:
+  push:
+    branches: [ "master", "main", "desarrollo" ]
+  pull_request:
+    branches: [ "master", "main", "desarrollo" ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: 1. Descargar Codigo
+      uses: actions/checkout@v4
+
+    - name: 2. Configurar MSBuild
+      uses: microsoft/setup-msbuild@v2
+
+    - name: 3. Configurar NuGet
+      uses: NuGet/setup-nuget@v1.2.0
+
+    - name: 4. Configurar Motor de Pruebas
+      uses: microsoft/setup-vstest@v1.0.5
+
+    - name: 5. Restaurar Paquetes NuGet
+      run: nuget restore SistemaBancario.sln
+
+    - name: 6. Compilar Solucion Completa
+      run: msbuild SistemaBancario.sln /p:Configuration=Debug
+
+    - name: 7. Ejecutar Pruebas Unitarias
+      run: vstest.console.exe SistemaBancario.Test\bin\Debug\SistemaBancario.Test.dll
