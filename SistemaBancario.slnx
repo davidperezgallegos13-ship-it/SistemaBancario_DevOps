@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="../SistemaBancario.Test/SistemaBancario.Test.csproj" Id="d37bd870-1185-499d-97e7-36360aa7b979" />
+  <Project Path="SistemaBancario.csproj" Id="bbbc433d-a55f-4ad7-bf0f-72bfb37bc738" />
+</Solution>
