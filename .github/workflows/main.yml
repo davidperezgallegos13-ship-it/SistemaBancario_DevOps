@@ -35,15 +35,13 @@ jobs:
       run: |
         $csprojFiles = Get-ChildItem -Filter "*.csproj" -Recurse
         foreach ($file in $csprojFiles) {
-            $projectName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
-            Write-Host "Compilando: $($file.FullName)"
             msbuild $file.FullName /p:Configuration=Debug /p:Platform="AnyCPU" /p:OutputPath="bin\Debug\" /p:BaseOutputPath="obj\"
         }
       shell: powershell
 
     - name: 7. Ejecutar Pruebas Unitarias Automatizadas
       run: |
-        $dllPath = Get-ChildItem -Path ".*" -Filter "*Test*.dll" -Recurse | Where-Object { $_.FullName -like "*bin\Debug*" } | Select-Object -First 1 -ExpandProperty FullName
         $vstestPath = Get-ChildItem -Path "Packages_Test" -Filter "vstest.console.exe" -Recurse | Select-Object -First 1 -ExpandProperty FullName
-        & $vstestPath $dllPath
+        $dllPath = Get-ChildItem -Path ".*" -Filter "*Test*.dll" -Recurse | Where-Object { $_.FullName -like "*bin\Debug*" } | Select-Object -First 1 -ExpandProperty FullName
+        & $vstestPath $dllPath /Platform:x64
       shell: powershell
