@@ -8,7 +8,7 @@ namespace SistemaBancario.Entidades
 {
     public class CuentaAhorro : Cuenta
     {
-        public override bool AperturaCuenta() => Saldo >= 100;//coreccion de saldo minimo para apertura de cuenta
+        public override bool AperturaCuenta() => Saldo >= 99;//coreccion de saldo minimo para apertura de cuenta
 
         public override void PagarInteres()
         {
