@@ -20,15 +20,15 @@ jobs:
     - name: 3. Configurar Gestor de Paquetes NuGet
       uses: NuGet/setup-nuget@v1.2.0
 
-    - name: 4. Restaurar Paquetes NuGet
-      run: nuget restore SistemaBancario.csproj
+    - name: 4. Restaurar Paquetes NuGet de la Solucion Completas
+      run: nuget restore
       shell: powershell
 
     - name: 5. Instalar Motor de Pruebas via NuGet
       run: nuget install Microsoft.TestPlatform -Version 17.8.0 -OutputDirectory Packages_Test
 
-    - name: 6. Compilar Proyecto Principal
-      run: msbuild SistemaBancario.csproj /p:Configuration=Debug /p:Platform="AnyCPU" /p:OutputPath="bin\Debug\" /p:BaseOutputPath="obj\"
+    - name: 6. Compilar Solucion Completa (App y Pruebas)
+      run: msbuild /p:Configuration=Debug /p:Platform="AnyCPU"
       shell: powershell
 
     - name: 7. Ejecutar Pruebas Automatizadas
@@ -36,8 +36,10 @@ jobs:
         $vstestPath = Get-ChildItem -Path "Packages_Test" -Filter "vstest.console.exe" -Recurse | Select-Object -First 1 -ExpandProperty FullName
         $targetDll = Get-ChildItem -Filter "*Test*.dll" -Recurse | Where-Object { $_.FullName -like "*bin\Debug*" } | Select-Object -First 1 -ExpandProperty FullName
         if ($targetDll) {
-            & $vstestPath "$targetDll" /Platform:x64
+            Write-Host "Ejecutando pruebas sobre: $targetDll"
+            & $vstestPath "$targetDll"
         } else {
-            Write-Host "Proyecto compilado con exito. No se detectaron pruebas pendientes."
+            Write-Error "¡Error Critico! No se encontro la DLL del proyecto de pruebas en bin\Debug."
+            exit 1
         }
       shell: powershell
