@@ -31,8 +31,8 @@ jobs:
 
     - name: 6. Compilar Proyectos Individualmente
       run: |
-        msbuild SistemaBancario.csproj /p:Configuration=Debug
-        msbuild SistemaBancario.Test.csproj /p:Configuration=Debug
+        msbuild SistemaBancario.csproj /t:Clean,Build /p:Configuration=Debug
+        msbuild SistemaBancario.Test.csproj /t:Clean,Build /p:Configuration=Debug
       shell: powershell
 
     - name: 7. Ejecutar Pruebas Automatizadas
