@@ -8,7 +8,7 @@ namespace SistemaBancario.Entidades
 {
     public class CuentaAhorro : Cuenta
     {
-        public override bool AperturaCuenta() => Saldo >= 99;
+        public override bool AperturaCuenta() => Saldo >= 80;
 
         public override void PagarInteres()
         {
